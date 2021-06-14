@@ -1,6 +1,6 @@
 <?php
 
-class GoodsCategory {
+class GoodsGroup {
 
     const PI = 3.14;
     public $id;
@@ -24,16 +24,42 @@ class GoodsCategory {
 
 }
 
+class GoodsCategory extends GoodsGroup {
+
+    public $temperature;
+    public $pressure;
+
+    public function __construct($id = 0, $name = '', $type = '', $temperature = 0, $pressure = 0)
+    {
+        parent::__construct($id, $name, $type, $temperature, $pressure);
+        $this->temperature = $temperature;
+        $this->pressure = $pressure;
+    }
+
+    public function view()
+    {
+        parent::view();
+        echo " Это подкласс класса " . __CLASS__ . "<br>";
+
+    }
 
 
-$a = new GoodsCategory(1, 'Изопрофлекс', 'Трубы');
+}
+
+
+
+
+$a = new GoodsGroup(1, 'Изопрофлекс', 'Трубы');
 
 $a->view();
 
-$b = new GoodsCategory(2, 'ТВЭЛ ПЭКС', 'Трубы');
+$b = new GoodsGroup(2, 'ТВЭЛ ПЭКС', 'Трубы');
 $b->view();
 
-echo $b->call_trash('дец');
+$c = new GoodsCategory('101', 'Изопрофлекс 95', 'Трубы', 95, 6);
+$c->view();
+
+echo $b->call_trash(' - это наша константа ПИ');
 
 
 
@@ -49,7 +75,8 @@ echo $b->call_trash('дец');
 //$a2->foo();
 //$a1->foo();
 //$a2->foo();
-// выводит 1234 т.к. static означает, что $x принадлежит всему классу, а не каждому объекту
+// выводит 1234 т.к. static $x=0 означает, $x принадлежит всему классу и что =0 применится один раз при первом
+// запуске функции. Дальше при каждом вызове от любого экземпляра этого класса будет работать инкремент
 
 
 //class A {
@@ -66,8 +93,8 @@ echo $b->call_trash('дец');
 //$b1->foo();
 //$a1->foo();
 //$b1->foo();
-// выводит 1122 т.к. static $x=0 означает, что это применится один при первом запуске функции, классов A и B - 2 штуки
-// вызов функции от экземпляра изменит $x в соответствующем классе
+// выводит 1122, т.к. static $x=0 означает, $x принадлежит всему классу и что =0 применится один раз при первом запуске
+// функции , классов A и B - 2 штуки, вызов функции от экземпляра изменит $x в соответствующем классе
 
 
 class A {
@@ -79,8 +106,12 @@ class B extends A
 {
 }
 $a1 = new A;
+var_dump($a1);
 $b1 = new B;
+var_dump($b1);
 $a1->foo();
 $b1->foo();
 $a1->foo();
 $b1->foo();
+
+//Вижу, что нет скобок, результат не отличается от предыдущего. Объяснение то же, но про скобки не догоняю
